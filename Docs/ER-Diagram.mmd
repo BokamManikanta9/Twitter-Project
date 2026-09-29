@@ -1,0 +1,119 @@
+erDiagram
+    direction TB
+
+    USER {
+        int id
+        string username
+        string email
+        string password
+        text bio
+        string profile_pic
+        string banner_pic
+        date dob
+        datetime created_at
+        string verification_status
+    }
+
+    VERIFICATION_REQUEST {
+        int id
+        int user_id
+        string status
+        datetime created_at
+    }
+
+    POST {
+        int id
+        int user_id
+        float trending_score
+        text content
+        json hashtags
+        string image
+        string video
+        datetime created_at
+    }
+
+    LIKE {
+        int id
+        int user_id
+        int post_id
+        datetime created_at
+    }
+
+    COMMENT {
+        int id
+        int user_id
+        int post_id
+        text text
+        int parent_id
+        datetime created_at
+    }
+
+    REPOST {
+        int id
+        int user_id
+        int post_id
+        datetime created_at
+    }
+
+    BOOKMARK {
+        int id
+        int user_id
+        int post_id
+        datetime created_at
+    }
+
+    CONVERSATION {
+        int id
+        int user1_id
+        int user2_id
+        datetime created_at
+        datetime updated_at
+    }
+
+    MESSAGE {
+        int id
+        int conversation_id
+        int sender_id
+        text text
+        datetime created_at
+        boolean is_read
+    }
+
+    NOTIFICATION {
+        int id
+        int recipient_id
+        int sender_id
+        string notification_type
+        int post_id
+        string link
+        boolean is_read
+        datetime created_at
+    }
+
+    USER ||--o{ VERIFICATION_REQUEST : submits
+    USER ||--o{ POST : creates
+
+    USER ||--o{ LIKE : creates
+    POST ||--o{ LIKE : receives
+
+    USER ||--o{ COMMENT : writes
+    POST ||--o{ COMMENT : receives
+    COMMENT ||--o{ COMMENT : replies_to
+
+    USER ||--o{ REPOST : creates
+    POST ||--o{ REPOST : receives
+
+    USER ||--o{ BOOKMARK : creates
+    POST ||--o{ BOOKMARK : contains
+
+    USER ||--o{ CONVERSATION : user1
+    USER ||--o{ CONVERSATION : user2
+
+    CONVERSATION ||--o{ MESSAGE : contains
+    USER ||--o{ MESSAGE : sends
+
+    USER ||--o{ NOTIFICATION : receives
+    USER ||--o{ NOTIFICATION : sends
+    POST ||--o{ NOTIFICATION : relates_to
+
+    USER }o--o{ USER : follows
