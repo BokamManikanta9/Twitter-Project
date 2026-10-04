@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}X | Trending{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title" style="margin-top: 10px; margin-left: 10px;">Trending</h2>
+
+<main class="content">
+    {% for post in posts %}
+    {% include "post_card.html" with post=post item=None link_user=True show_edit_menu=False show_edit_delete=False extra_class="" comments_visible=False %}
+    {% empty %}
+    <p style="display:flex; justify-content:center; align-items:center;">
+        No trending posts
+    </p>
+    {% endfor %}
+</main>
+
+<script src="{% static 'scripts/postActions.js' %}"></script>
+
+{% endblock %}

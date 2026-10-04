@@ -1,0 +1,90 @@
+body {
+    background-color: #000;
+    color: #e7e9ea;
+    font-family: Arial, sans-serif;
+}
+
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    padding: 15px;
+    border-bottom: 1px solid #2f3336;
+}
+
+.people-list {
+    display: flex;
+    flex-direction: column;
+}
+.bluetick-icon {
+    width: 20px;
+    height: 20px;
+    background: transparent;
+
+}
+.person-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 14px 16px;
+    border-bottom: 1px solid #2f3336;
+
+    transition: background 0.2s ease;
+}
+
+.person-card:hover {
+    background-color: #0a0a0a;
+}
+
+.person-info {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    flex: 1;
+}
+
+.person-info .profile-pic {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.person-info b {
+    display: block;
+    font-size: 15px;
+}
+
+.person-info p {
+    font-size: 13px;
+    color: #71767b;
+    margin: 2px 0 0 0;
+}
+
+.follow-btn {
+    background-color: #e7e9ea;
+    color: #000;
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+
+    transition: all 0.2s ease;
+}
+
+.follow-btn:hover {
+    background-color: #d7dbdc;
+}
+
+.follow-btn.unfollow {
+    background-color: transparent;
+    color: #e7e9ea;
+    border: 1px solid #536471;
+}
+
+.follow-btn.unfollow:hover {
+    background-color: rgba(239, 243, 244, 0.1);
+}

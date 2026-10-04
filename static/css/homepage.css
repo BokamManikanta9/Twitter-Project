@@ -1,0 +1,168 @@
+body {
+    color: #e7e9ea;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* was: display:flex + justify-content:center + text-align:center — that
+   forced every post's text to center-align, fighting .post-card's
+   text-align:left in common.css. This is the main reason the feed
+   looked "off". Just a plain centered column, left-aligned content. */
+.content {
+    max-width: 600px;
+    margin: 0 auto;
+    border-left: 1px solid #2f3336;
+    border-right: 1px solid #2f3336;
+    min-height: 100vh;
+    padding: 0;
+}
+
+.post-actions {
+    margin-left: 52px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+/* .like-btn is a <span>❤️</span>, not an <img> — height/width don't
+   apply to inline emoji text, and color: #f91880 (in common.css)
+   silently does nothing on emoji glyphs. inline-flex + font-size lets
+   us actually control its rendered size, and a filter (same trick
+   common.css already uses for repost/bookmark) is the only way to
+   recolor it when active. */
+.like-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.like-btn:not(.active) {
+    filter: grayscale(1) opacity(0.7);
+}
+
+.like-btn.active {
+    filter: none;
+}
+
+.comment-icon,
+.retweet-icon,
+.share-icon,
+.bookmark-icon {
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    filter: invert(1);
+}
+
+.like-count {
+    margin-left: 5px;
+    font-size: 13px;
+    color: #71767b;
+}
+
+.options-wrapper {
+    position: relative;
+    display: inline-block;
+    background: transparent;
+}
+
+.options-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 50%;
+    color: white;
+    line-height: 1;
+}
+
+.options-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.options-menu {
+    position: absolute;
+    right: 0;
+    top: 28px;
+    background: #000;
+    border: 1px solid #2f3336;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    min-width: 140px;
+    overflow: hidden;
+    z-index: 100;
+}
+
+.edit-option {
+    display: block;
+    padding: 10px 12px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+}
+
+.edit-option:hover {
+    background: rgba(231, 233, 234, 0.06);
+}
+
+/* Aligned to the same 600px column as .content, so the tab bar's edges
+   line up with the feed below it instead of stretching full width. */
+.feed-tabs {
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    border-left: 1px solid #2f3336;
+    border-right: 1px solid #2f3336;
+    border-bottom: 1px solid #2f3336;
+}
+
+.feed-tabs a {
+    flex: 1;
+    text-align: center;
+    padding: 14px 12px;
+    text-decoration: none;
+    color: #71767b;
+    font-weight: 700;
+    transition: background 0.15s, color 0.15s;
+}
+
+.feed-tabs a:hover {
+    background: rgba(231, 233, 234, 0.03);
+    color: #e7e9ea;
+}
+
+.feed-tabs a.active {
+    color: white;
+    border-bottom: 3px solid #1d9bf0;
+}
+
+.user-left {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.reply-context {
+    font-size: 13px;
+    margin-bottom: 2px;
+    color: #71767b;
+}
+
+@media (max-width: 640px) {
+    .content,
+    .feed-tabs {
+        border-left: none;
+        border-right: none;
+    }
+}

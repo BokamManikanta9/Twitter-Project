@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/follow_list.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="follow-page">
+
+    <div class="top-bar">
+        <h2>{{ title }}</h2>
+        <p>@{{ user_profile.username }}</p>
+    </div>
+
+    {% if users %}
+
+    {% for user in users %}
+
+    <a href="{% url 'accounts:profile' user.username %}" class="user-card">
+
+        {% if user.profile_pic %}
+        <img src="{{ user.profile_pic.url }}" class="profile-pic">
+        {% else %}
+        <img src="{% static 'images/default-profile.jpeg' %}" class="profile-pic">
+        {% endif %}
+
+        <div class="user-info">
+
+            <h3>
+                {% if user.first_name %}
+                {{ user.first_name }}
+                {% else %}
+                {{ user.username }}
+                {% endif %}
+            </h3>
+
+            <p>@{{ user.username }}</p>
+
+            {% if user.bio %}
+            <small>{{ user.bio }}</small>
+            {% endif %}
+
+        </div>
+
+    </a>
+
+    {% endfor %}
+
+    {% else %}
+
+    <p class="empty-text">No {{ title|lower }} yet.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

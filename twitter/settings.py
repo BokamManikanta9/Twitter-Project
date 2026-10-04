@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/6.1/topics/settings/
 
 import os
 from pathlib import Path
+import cloudinary
 
 import dj_database_url
 from dotenv import load_dotenv
@@ -20,11 +21,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
 
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+)
+
 # Get SECRET_KEY from environment variable.
 # The fallback value is only for local development.
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-# DEBUG=True locally, DEBUG=False on Render.
+
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = [
@@ -32,7 +39,6 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
-# Render automatically provides RENDER_EXTERNAL_HOSTNAME.
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 
 if RENDER_EXTERNAL_HOSTNAME:
@@ -46,6 +52,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "cloudinary",
+    "cloudinary_storage",
+    "django_celery_beat",
+    "home",
+    "accounts",
+    "posts",
+    "messaging",
+    "notifications",
 ]
 
 MIDDLEWARE = [
@@ -68,7 +82,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
 
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
 
         "APP_DIRS": True,
 
@@ -84,11 +98,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "twitter.wsgi.application"
 
-# Local:
-#     SQLite database
-#
-# Render:
-#     PostgreSQL using DATABASE_URL
 
 DATABASES = {
     "default": dj_database_url.config(
@@ -97,6 +106,7 @@ DATABASES = {
     )
 }
 
+AUTH_USER_MODEL = "accounts.User"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -128,7 +138,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -137,9 +147,20 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-# Directory where collectstatic will collect all static files.
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 MAILERS = {
     "default": {
@@ -148,8 +169,6 @@ MAILERS = {
 }
 
 
-# Render URL can be added automatically through the environment
-# variable after deployment.
 
 RENDER_EXTERNAL_URL = os.environ.get("RENDER_EXTERNAL_URL")
 

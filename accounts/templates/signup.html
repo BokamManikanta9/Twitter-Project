@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X | signup</title>
+    <link rel="icon" href="{% static 'images/x-favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+</head>
+
+<body>
+    <div class="signup-container">
+
+        <div class="signup-card">
+
+            <div class="x-logo">
+                <svg viewBox="0 0 480 490" width="50" height="100" fill="white">
+                    <path
+                        d="M285.38 207.711L462.954 1.5H420.874L266.687 180.55L143.538 1.5H1.50003L187.726 272.256L1.50003 488.5H43.5818L206.408 299.417L336.462 488.5H478.5L285.37 207.711H285.38ZM227.743 274.641L208.875 247.68L58.7444 33.147H123.379L244.536 206.282L263.405 233.243L420.894 458.292H356.259L227.743 274.652V274.641Z" />
+                </svg>
+            </div>
+            <h2>Create your account</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name">
+
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <div class="password-box">
+                    <input type="password" name="password" placeholder="Password" id="password" required>
+                    <span class="toggle-password" onclick="togglePassword('password', this)">👁</span>
+                </div>
+
+                <div class="password-box">
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" id="confirmPassword"
+                        required>
+                    <span class="toggle-password" onclick="togglePassword('confirmPassword', this)">👁</span>
+                </div>
+                <input type="date" name="dob" id="dob" max="{% now 'Y-m-d' %}" required>
+                <div class="message-backend">
+                    {% for message in messages %}
+                    <div class="msg {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="submit">Create account</button>
+            </form>
+
+            <p>
+                Already have an account?
+                <a href="{% url 'accounts:login' %}">Sign in</a>
+            </p>
+
+
+        </div>
+    </div>
+    <script src="{% static 'scripts/togglePassword.js' %}"></script>
+</body>
+
+</html>

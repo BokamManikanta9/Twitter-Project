@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}X | Post{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<main class="content">
+    {% include "post_card.html" with post=post item=None link_user=True show_edit_menu=False show_edit_delete=False extra_class="post-detail" comments_visible=True %}
+</main>
+
+<script src="{% static 'scripts/postActions.js' %}"></script>
+
+{% endblock %}

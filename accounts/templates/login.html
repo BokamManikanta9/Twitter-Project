@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X | Login</title>
+    <link rel="icon" href="{% static 'images/x-favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="x-logo">
+                <svg viewBox="0 0 480 490" width="50" height="100" fill="white">
+                    <path
+                        d="M285.38 207.711L462.954 1.5H420.874L266.687 180.55L143.538 1.5H1.50003L187.726 272.256L1.50003 488.5H43.5818L206.408 299.417L336.462 488.5H478.5L285.37 207.711H285.38ZM227.743 274.641L208.875 247.68L58.7444 33.147H123.379L244.536 206.282L263.405 233.243L420.894 458.292H356.259L227.743 274.652V274.641Z" />
+                </svg>
+            </div>
+            <h1>Sign in to X</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <input type="text" name="username" placeholder="Username" required>
+                <div class="password-box">
+                    <input type="password" name="password" placeholder="Password" id="password" required>
+                    <span class="toggle-password" onclick="togglePassword('password', this)">👁</span>
+                </div>
+                <div id="message" class="message">
+                    {% for message in messages %}
+                    <div class="msg {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="submit">Sign In</button>
+            </form>
+            <p>Don't have an account?<a href="{% url 'accounts:signup' %}">Sign up</a></p>
+        </div>
+    </div>
+    <script src="{% static 'scripts/togglePassword.js' %}"></script>
+</body>
+
+</html>

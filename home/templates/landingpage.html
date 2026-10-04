@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X. It's what's happening / X</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'images/x-favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'css/landingpage.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="left">
+
+            <h2>Happening <br>now</h2>
+
+            <h3>Join today.</h3>
+
+            <button class="btn signup" onclick="window.location.href=`{% url 'accounts:signup' %}`">
+                Create account
+            </button>
+
+            <div class="divider">or</div>
+
+            <button class="btn login" onclick="window.location.href=`{% url 'accounts:login' %}`">
+                Sign in
+            </button>
+
+        </div>
+
+        <div class="right">
+
+            <svg class="logo" viewBox="0 0 480 490" fill="white">
+                <path
+                    d="M285.38 207.711L462.954 1.5H420.874L266.687 180.55L143.538 1.5H1.50003L187.726 272.256L1.50003 488.5H43.5818L206.408 299.417L336.462 488.5H478.5L285.37 207.711H285.38ZM227.743 274.641L208.875 247.68L58.7444 33.147H123.379L244.536 206.282L263.405 233.243L420.894 458.292H356.259L227.743 274.652V274.641Z" />
+            </svg>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

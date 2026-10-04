@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}">
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="search-page">
+
+    <form method="GET" action="{% url 'accounts:search_page' %}" class="search-bar">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search..."
+            value="{{ query }}"
+        >
+
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="results">
+
+        {% if query %}
+            <p class="no-results">
+                Search is currently unavailable.
+            </p>
+        {% else %}
+            <p class="hint">
+                Search users and posts here.
+            </p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script src="{% static 'scripts/postActions.js' %}"></script>
+
+{% endblock %}

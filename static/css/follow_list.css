@@ -1,0 +1,50 @@
+.follow-page{
+    max-width:600px;
+    margin:auto;
+    color:white;
+}
+
+.top-bar{
+    padding:18px;
+    border-bottom:1px solid #2f3336;
+}
+
+.user-card{
+    display:flex;
+    gap:15px;
+    padding:15px;
+    border-bottom:1px solid #2f3336;
+    text-decoration:none;
+    color:white;
+}
+
+.user-card:hover{
+    background:#080808;
+}
+.bluetick-icon {
+    width: 20px;
+    height: 20px;
+    background: transparent;
+
+}
+.profile-pic{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.user-info h3{
+    margin:0;
+}
+
+.user-info p{
+    color:gray;
+    margin:2px 0;
+}
+
+.empty-text{
+    padding:20px;
+    text-align:center;
+    color:gray;
+}

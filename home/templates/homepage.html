@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}X | Home{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="feed-tabs">
+    <a href="?tab=for_you" class="{% if tab == 'for_you' or not tab %}active{% endif %}">For You</a>
+    <a href="?tab=following" class="{% if tab == 'following' %}active{% endif %}">Following</a>
+</div>
+
+<main class="content">
+
+    <div id="feed">
+        {% include "feed.html" %}
+    </div>
+
+    <div id="load-more-trigger"></div>
+
+</main>
+
+<script src="{% static 'scripts/postActions.js' %}"></script>
+<script src="{% static 'scripts/infiniteScroll.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}X Clone{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="icon" href="{% static 'images/x-favicon.png' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <div class="mobile-header">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-header">
+                <button class="close-btn" id="closeSidebarBtn" aria-label="Close menu">&times;</button>
+            </div>
+
+            <div class="logo">
+                <svg viewBox="0 0 480 490" fill="white">
+                    <path
+                        d="M285.38 207.711L462.954 1.5H420.874L266.687 180.55L143.538 1.5H1.50003L187.726 272.256L1.50003 488.5H43.5818L206.408 299.417L336.462 488.5H478.5L285.37 207.711H285.38ZM227.743 274.641L208.875 247.68L58.7444 33.147H123.379L244.536 206.282L263.405 233.243L420.894 458.292H356.259L227.743 274.652V274.641Z" />
+                </svg>
+            </div>
+
+            <nav class="menu">
+                <div class="top-menu">
+                    <a href="{% url 'home:homepage' %}">
+                        <img src="{% static 'images/x-homeicon.png' %}">
+                        <span>Home</span>
+                    </a>
+                    <a href="{% url 'accounts:search_page' %}">
+                        <img src="{% static 'images/x-searchicon.png' %}">
+                        <span>Search</span>
+                    </a>
+                    <a href="{% url 'accounts:people' %}">
+                        <img src="{% static 'images/x-followicon.png' %}">
+                        <span>People</span>
+                    </a>
+                    <a href="{% url 'posts:bookmarks' %}">
+                        <img src="{% static 'images/x-bookmarkicon.png' %}">
+                        <span>Bookmarks</span>
+                    </a>
+                    <a href="{% url 'posts:trending' %}">
+                        <img src="{% static 'images/x-trendingicon.jpg' %}">
+                        <span>Trending</span>
+                    </a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:profile' request.user.username%}">
+                        <img src="{% static 'images/x-profileicon.png' %}">
+                        <span>Profile</span>
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'posts:create_post' %}">
+                        <img src="{% static 'images/x-createpost.png'%}">
+                        <span>Create Post</span>
+                    </a>
+                    <a href="{% url 'notifications:notifications' %}" class="notification-link">
+                        <div class="notification-icon">
+                            <img src="{% static 'images/x-notification-icon.png' %}">
+
+                            {% if notification_count %}
+                                <span class="notification-badge">
+                                    {{ notification_count }}
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <span>Notifications</span>
+                    </a>
+                    <a href="{% url 'inbox' %}">
+                        <img src="{% static 'images/x-message-icon.png' %}">
+                        <span>Messages</span>
+                    </a>
+                </div>
+
+                <div class="bottom-menu">
+                    <a href="{% url 'accounts:logout' %}">
+                        <img src="{% static 'images/x-logout.png'%}">
+                        <span>logout</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+
+        <div class="side-any"></div>
+    </div>
+
+    <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function openSidebar() {
+            sidebar.classList.add('open');
+            overlay.classList.add('show');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+
+        hamburgerBtn.addEventListener('click', openSidebar);
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+    </script>
+
+</body>
+
+</html>

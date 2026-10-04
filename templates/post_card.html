@@ -1,0 +1,137 @@
+{% load static %}
+
+<div class="post-card {{ extra_class }}"
+     data-post-id="{{ post.id }}"
+     {% if item and item.type == "repost" %}
+     data-repost-card="true"
+     data-own-repost="{% if request.user == item.reposted_by %}true{% else %}false{% endif %}"
+     {% endif %}>
+
+    {% if item and item.type == "repost" %}
+    <div class="repost-banner">
+        <img src="{% static 'images/x-retweeticon.png' %}" class="retweet-icon">
+        <a href="{% url 'accounts:profile' item.reposted_by.username %}" class="reposter-link">
+            {{ item.reposted_by.first_name|default:item.reposted_by.username }}
+        </a> reposted
+    </div>
+    {% endif %}
+
+    <div class="post-user">
+
+        {% if link_user %}
+        <a href="{% url 'accounts:profile' post.user.username %}" class="user-left">
+        {% else %}
+        <div class="post-user-details">
+        {% endif %}
+
+            {% if post.user.profile_pic %}
+            <img src="{{ post.user.profile_pic.url }}" class="profile-pic">
+            {% else %}
+            <img src="{% static 'images/default-profile.jpeg' %}" class="profile-pic">
+            {% endif %}
+
+            <div class="post-meta">
+                <b>
+                    {{ post.user.first_name|default:post.user.username }}
+                    {% if post.user.verification_status == 'approved' %}
+                    <img src="{% static 'images/x-bluetickicon.png' %}" class="bluetick-icon">
+                    {% endif %}
+                </b>
+                <small>{{ post.created_at|date:"d M Y H:i" }}</small>
+            </div>
+
+        {% if link_user %}
+        </a>
+        {% else %}
+        </div>
+        {% endif %}
+
+        {% if show_edit_menu and request.user == post.user and request.user.verification_status == 'approved' %}
+        <div class="options-wrapper">
+            <button class="options-btn" onclick="togglePostMenu(this)">⋯</button>
+            <div class="options-menu" style="display:none;">
+                <a href="{% url 'posts:edit_post' post.id %}" class="edit-option">✏ Edit Post</a>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if show_edit_delete and request.user == post.user %}
+        <div class="post-options">
+            {% if request.user.verification_status == 'approved' %}
+            <a href="{% url 'posts:edit_post' post.id %}">
+                <button type="button" class="edit-btn">Edit</button>
+            </a>
+            {% endif %}
+        <form action="{% url 'posts:delete_post' post.id %}" method="POST" class="delete-post-form">
+            {% csrf_token %}
+            <button type="submit" class="edit-btn">Delete</button>
+        </form>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <div class="post-text">{{ post.content }}</div>
+
+    {% if post.image %}
+    <img src="{{ post.image.url }}" class="post-media">
+    {% endif %}
+
+    {% if post.video %}
+    <video controls class="post-media">
+        <source src="{{ post.video.url }}">
+    </video>
+    {% endif %}
+
+    <div class="post-actions">
+        <img src="{% static 'images/x-commenticon.png' %}" class="comment-icon" onclick="toggleComments(this)">
+        <div>
+            <span class="repost-btn {% if post.user_has_reposted %}active{% endif %}" data-post="{{ post.id }}"
+                onclick="toggleRepost(this)">
+                <img src="{% static 'images/x-retweeticon.png' %}" class="retweet-icon">
+            </span>
+            <span class="repost-count">{{ post.reposts.count }}</span>
+        </div>
+        <div>
+            <span class="like-btn {% if post.user_has_liked %}active{% endif %}" data-post="{{ post.id }}"
+                onclick="toggleLike(this)">
+                ❤️
+            </span>
+            <span class="like-count">{{ post.likes.count }}</span>
+        </div>
+        <div>
+            <span class="bookmark-btn {% if post.user_has_bookmarked %}active{% endif %}" data-post="{{ post.id }}"
+                onclick="toggleBookmark(this)">
+                <img src="{% static 'images/x-bookmarkicon.png' %}" class="bookmark-icon">
+            </span>
+        </div>
+        <div class="share-wrapper">
+            <span class="share-btn" onclick="toggleShareMenu(this)">
+                <img src="{% static 'images/x-shareicon.png' %}" class="share-icon">
+            </span>
+            <div class="share-menu" style="display:none;">
+                <button onclick="copyPostLink(this)" data-post="{{ post.id }}">Copy link</button>
+                <button onclick="closeShareMenu(this)">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="comment-section"{% if comments_visible %} style="display:block;"{% endif %}>
+
+        <form action="{% url 'posts:comment_post' post.id %}" method="POST" class="comment-form"
+            data-post="{{ post.id }}">
+            {% csrf_token %}
+            <input type="text" name="comment" placeholder="Write a reply..." required>
+            <button type="submit">Reply</button>
+        </form>
+
+        <div class="comments-list">
+            {% for comment in post.top_comments %}
+            {% include "comment.html" with comment=comment %}
+            {% empty %}
+            <p class="no-comments">No comments yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,3 @@
+{% for item in profile_feed %}
+    {% include "post_card.html" with post=item.post show_edit_delete=True %}
+{% endfor %}

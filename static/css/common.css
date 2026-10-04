@@ -1,0 +1,447 @@
+/* ============================================================
+   common.css
+   Everything here was IDENTICAL (or computed to the same result)
+   in both home.css and prof.css. Link this BEFORE the page-specific
+   file so page rules can still override where needed:
+
+   <link rel="stylesheet" href="common.css">
+   <link rel="stylesheet" href="home.css">   <!-- or prof.css -->
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #000;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ---- Post card ---- */
+.post-card {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #2f3336;
+    margin-bottom: 0px;
+}
+
+.post-user {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 0px;
+}
+
+.profile-pic {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.post-meta b {
+    font-weight: 700;
+}
+
+.post-meta small {
+    font-size: 12px;
+    color: #71767b;
+}
+
+.post-text {
+    margin-left: 52px;
+    margin-top: 2px;
+    margin-bottom: 12px;
+    font-size: 15px;
+}
+
+.post-media {
+    width: calc(100% - 52px);
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-left: 52px;
+}
+
+.bluetick-icon {
+    width: 20px;
+    height: 20px;
+    background: transparent;
+}
+
+.bluetick-icon img {
+    display: block;
+    background: transparent;
+}
+
+.like-btn.active {
+    color: #f91880;
+}
+
+.repost-btn.active .retweet-icon {
+    filter: invert(1) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
+}
+
+.bookmark-btn.active .bookmark-icon {
+    filter: invert(53%) sepia(94%) saturate(1352%) hue-rotate(176deg) brightness(101%) contrast(101%);
+}
+
+/* ---- Comments ---- */
+.comment-section {
+    margin-top: 15px;
+    border-top: 1px solid #2f3336;
+    padding-top: 12px;
+    display: none;
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.comment {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.comment-profile-pic {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.comment-body {
+    flex: 1;
+    text-align: left;
+}
+
+.comment-header {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 3px;
+}
+
+.comment-header strong {
+    font-size: 14px;
+}
+
+.comment-header small {
+    font-size: 12px;
+    color: #71767b;
+}
+
+.comment-text {
+    font-size: 16px;
+    line-height: 1.25;
+    word-break: break-word;
+    color: #e7e9ea;
+}
+
+.reply-link {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #1d9bf0;
+    cursor: pointer;
+}
+
+.reply-link:hover {
+    text-decoration: underline;
+}
+
+.reply-form {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.reply-form input {
+    flex: 1;
+    background: #16181c;
+    border: 1px solid #2f3336;
+    border-radius: 20px;
+    padding: 8px 12px;
+    color: white;
+    outline: none;
+}
+
+.reply-form button {
+    background: #1d9bf0;
+    border: none;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.replies {
+    margin-left: 20px;
+    padding-left: 12px;
+    border-left: 1px solid #2f3336;
+    margin-top: 10px;
+}
+
+.replies .replies {
+    border-left: 1px solid #3a3f44;
+}
+
+.comment:hover,
+.reply:hover {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+}
+
+.no-comments {
+    color: #71767b;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.comment-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #2f3336;
+}
+
+.comment-form input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    outline: none;
+}
+
+.comment-form input::placeholder {
+    color: #71767b;
+}
+
+.comment-form button {
+    background: #1d9bf0;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.comment-form button:hover {
+    background: #1a8cd8;
+}
+
+.show-replies {
+    background: none;
+    border: none;
+    color: #1d9bf0;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.show-replies:hover {
+    text-decoration: underline;
+}
+
+.replies-container {
+    margin-top: 4px;
+}
+
+.replies-container .comment {
+    padding-left: 0;
+}
+
+.comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 6px;
+}
+
+.comment-actions .reply-link,
+.comment-edit-btn,
+.comment-delete-btn,
+.save-comment-btn,
+.cancel-comment-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #71767b;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.comment-actions .reply-link:hover,
+.comment-edit-btn:hover {
+    color: #1d9bf0;
+}
+
+.comment-delete-btn:hover {
+    color: #f4212e;
+}
+
+.save-comment-btn {
+    color: #1d9bf0;
+    font-weight: 600;
+}
+
+.save-comment-btn:hover {
+    text-decoration: underline;
+}
+
+.cancel-comment-btn:hover {
+    color: #e7e9ea;
+}
+
+.comment-edit-input {
+    width: 100%;
+    min-height: 60px;
+    margin-top: 4px;
+    padding: 8px 10px;
+    background: #16181c;
+    border: 1px solid #2f3336;
+    border-radius: 12px;
+    color: #e7e9ea;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.comment-edit-input:focus {
+    outline: none;
+    border-color: #1d9bf0;
+}
+
+/* ---- Share menu ---- */
+.share-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.share-menu {
+    position: absolute;
+    right: 0;
+    top: 25px;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 120px;
+    z-index: 100;
+}
+
+.share-menu button {
+    background: none;
+    border: none;
+    color: white;
+    padding: 6px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.share-menu button:hover {
+    background: #222;
+}
+
+/* ---- Confirm dialog ---- */
+.confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    border: none;
+    border-radius: 16px;
+    padding: 0;
+    width: 380px;
+    max-width: 90%;
+    background: #000;
+    color: #e7e9ea;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+}
+
+.confirm-dialog::backdrop {
+    background: rgba(91, 112, 131, 0.4);
+    backdrop-filter: blur(3px);
+}
+
+.confirm-dialog-content {
+    padding: 24px;
+}
+
+.confirm-dialog-content h3 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.confirm-dialog-content p {
+    margin: 0 0 22px;
+    color: #71767b;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.confirm-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-secondary,
+.btn-danger {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #e7e9ea;
+    border: 1px solid #536471;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-danger {
+    background: #f4212e;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #d91c28;
+}

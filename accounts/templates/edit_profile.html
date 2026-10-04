@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>x | edit Profile</title>
+    <link rel="stylesheet" href="{% static 'css/edit-profile.css' %}">
+    <link rel="icon" href="{% static 'images/x-favicon.png' %}">
+    </head>
+    <body>
+        <div class="edit-container">
+            <div class="edit-header">
+                <a href="{% url 'accounts:profile' username=user.username %}" class="close-btn">✕</a>
+
+                <h2>Edit profile</h2>
+
+                <button type="submit" form="edit-form" class="save-btn">
+                    Save
+                </button>
+            </div>
+            <form id="edit-form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="banner-section">
+
+                    {% if request.user.banner_pic %}
+                        <img src="{{ user.banner_pic.url }}" class="banner-preview">
+                    {% else %}
+                        <div class="banner-preview default-banner"></div>
+                    {% endif %}
+                    <label class="upload-overlay">
+                        <div class="icon-circle">📷</div>
+                        <input type="file" name="banner_pic" onchange="previewBanner(event)">
+                    </label>
+                </div>
+        <div class="profile-section">
+            {% if request.user.profile_pic %}
+                <img src="{{ user.profile_pic.url }}" class="profile-preview">
+            {% else %}
+                <img src="{% static 'images/default-profile.jpeg' %}" class="profile-preview">
+            {% endif %}
+            <label class="upload-overlay">
+                <div class="icon-circle">📷</div>
+                <input type="file" name="profile_pic" onchange="previewProfile(event)">
+            </label>
+        </div>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input
+                        type="text"
+                        name="first_name"
+                        value="{{user.first_name}}"
+                        placeholder=" "
+                    >
+                </div>
+                <div class="form-group">
+                    <label>Bio</label>
+                    <textarea name="bio" placeholder=" ">{{ user.bio }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                <input
+                    type="date"
+                    name="dob"
+                    id="dob"
+                    value="{{user.dob|date:'Y-m-d' }}"
+                >
+                </div>
+            </form>
+        </div>
+    <script src="{% static 'scripts/editProfile.js' %}"></script>
+    </body>
+</html>

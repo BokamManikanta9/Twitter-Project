@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}X | Bookmarks{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<main class="content">
+    {% for post in posts %}
+    {% include "post_card.html" with post=post item=None link_user=True show_edit_menu=False show_edit_delete=False extra_class="" comments_visible=False %}
+    {% empty %}
+    <p class="no-comments">No bookmarks yet.</p>
+    {% endfor %}
+</main>
+
+<script src="{% static 'scripts/postActions.js' %}"></script>
+
+{% endblock %}

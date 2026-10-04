@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}x | Profile{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-page">
+
+    <div class="top-bar">
+        <div>
+            <h3>{{ user_profile.first_name|default:user_profile.username }}</h3>
+           <small>{{  post_count }} posts</small>
+        </div>
+        {% if request.user == user_profile %}
+        {% if user_profile.verification_status == 'none' or user_profile.verification_status == 'rejected' %}
+        <form method="POST" action="{% url 'accounts:request_verification' %}">
+            {% csrf_token %}
+            <button class="edit-btn">Get Verified</button>
+        </form>
+        {% elif user_profile.verification_status == 'pending' %}
+        <button class="edit-btn" disabled>Verification Pending...</button>
+        {% elif user_profile.verification_status == 'approved' %}
+        <button class="edit-btn" disabled>Verified ✔</button>
+        {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="banner">
+        {% if user_profile.banner_pic %}
+        <img src="{{ user_profile.banner_pic.url }}" class="banner-img">
+        {% endif %}
+    </div>
+
+    <div class="profile-info">
+
+        <div class="profile-header">
+            {% if user_profile.profile_pic %}
+            <img src="{{ user_profile.profile_pic.url }}" class="profile-pic">
+            {% else %}
+            <img src="{% static 'images/default-profile.jpeg' %}" class="profile-pic">
+            {% endif %}
+
+            {% if request.user == user_profile %}
+            <a href="{% url 'accounts:edit_profile' %}"><button class="edit-btn">Edit Profile</button></a>
+            {% else %}
+            <a href="{% url 'accounts:follow_user' user_profile.id %}">
+                {% if is_following %}
+                <button class="edit-btn">Following</button>
+                {% else %}
+                <button class="edit-btn">Follow</button>
+                {% endif %}
+            </a>
+            {% if user_profile.is_verified %}
+            <span class="verified-badge">✔ Verified</span>
+            {% endif %}
+            {% endif %}
+        </div>
+
+        <h2 class="display-name">
+            {{ user_profile.first_name|default:user_profile.username }}
+            {% if user_profile.verification_status == 'approved' %}
+            <span class="blue-tick"><img src="{% static 'images/x-bluetickicon.png' %}" class="bluetick-icon"></span>
+            {% endif %}
+        </h2>
+
+        <p class="handle">@{{ user_profile.username }}</p>
+
+        {% if user_profile.bio %}
+        <p class="bio">{{ user_profile.bio }}</p>
+        {% endif %}
+
+        <div class="joined">Joined {{ user_profile.date_joined|date:"d F Y" }}</div>
+
+        <div class="follow-stats">
+            <a href="{% url 'accounts:following_list' user_profile.username %}" class="follow-link">
+                <b>{{ following_count }}</b> Following
+            </a>
+            <a href="{% url 'accounts:followers_list' user_profile.username %}" class="follow-link">
+                <b>{{ followers_count }}</b> Followers
+            </a>
+        </div>
+
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('posts')">Posts</div>
+        <div class="tab" onclick="showTab('replies')">Replies</div>
+    </div>
+
+<div id="posts-section" class="tab-content">
+    <div id="feed">
+        {% for item in profile_feed %}
+            {% include "post_card.html" with post=item.post item=item show_edit_delete=True %}
+        {% endfor %}
+    </div>
+
+    <div id="load-more-trigger"></div>
+</div>
+
+   <div id="replies-section" class="tab-content" style="display:none;">
+    {% for reply in user_replies %}
+        <a href="{% url 'posts:post_detail' reply.post.id %}#comment-{{ reply.id }}" class="reply-card-link">
+            <div class="post-card reply-card">
+
+                <div class="post-user">
+                    <div class="post-user-details">
+                        {% if user_profile.profile_pic %}
+                            <img src="{{ user_profile.profile_pic.url }}" class="profile-pic">
+                        {% else %}
+                            <img src="{% static 'images/default-profile.jpeg' %}" class="profile-pic">
+                        {% endif %}
+
+                        <div class="post-meta">
+                            <b>
+                                {{ user_profile.first_name|default:user_profile.username }}
+                                {% if user_profile.verification_status == 'approved' %}
+                                    <img src="{% static 'images/x-bluetickicon.png' %}" class="bluetick-icon">
+                                {% endif %}
+                            </b>
+                            <small>{{ reply.created_at|date:"d M Y H:i" }}</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reply-context">
+                    Replying to
+                    {% if reply.parent %}
+                        <span class="reply-target">@{{ reply.parent.user.username }}</span>
+                    {% else %}
+                        <span class="reply-target">@{{ reply.post.user.username }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="post-text">{{ reply.text }}</div>
+
+                <div class="reply-original-post">on: "{{ reply.post.content|truncatechars:60 }}"</div>
+
+            </div>
+        </a>
+    {% empty %}
+        <p>No replies yet</p>
+    {% endfor %}
+</div>
+
+</div>
+
+<script src="{% static 'scripts/postActions.js' %}"></script>
+<script src="{% static 'scripts/profile.js' %}"></script>
+{% endblock %}

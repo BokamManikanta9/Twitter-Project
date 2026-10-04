@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="{% static 'css/create_post.css' %}">
+</head>
+
+<body>
+
+    <div class="page-overlay">
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+                <h3>Edit Post</h3>
+                <a href="{% url 'home:homepage' %}" class="close-btn">✕</a>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <textarea name="content">{{ post.content }}</textarea>
+
+                {% if post.image %}
+                <img src="{{ post.image.url }}" style="max-width:100%;">
+                {% endif %}
+
+                {% if post.video %}
+                <video controls style="max-width:100%;">
+                    <source src="{{ post.video.url }}">
+                </video>
+                {% endif %}
+
+                <div class="media-box">
+                    <input type="file" name="image" accept="image/*">
+                    <input type="file" name="video" accept="video/*">
+                </div>
+
+                <button type="submit" class="post-submit-btn">
+                    Save Changes
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

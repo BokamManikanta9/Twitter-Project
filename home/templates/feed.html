@@ -1,0 +1,3 @@
+{% for item in feed %}
+    {% include "post_card.html" with post=item.post item=item link_user=True show_edit_menu=True show_edit_delete=False extra_class="" comments_visible=False %}
+{% endfor %}
