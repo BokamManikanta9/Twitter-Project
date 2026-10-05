@@ -1,13 +1,3 @@
-/* ============================================================
-   common.css
-   Everything here was IDENTICAL (or computed to the same result)
-   in both home.css and prof.css. Link this BEFORE the page-specific
-   file so page rules can still override where needed:
-
-   <link rel="stylesheet" href="common.css">
-   <link rel="stylesheet" href="home.css">   <!-- or prof.css -->
-   ============================================================ */
-
 * {
     box-sizing: border-box;
 }
@@ -21,7 +11,7 @@ a {
     color: inherit;
 }
 
-/* ---- Post card ---- */
+
 .post-card {
     padding: 14px;
     text-align: left;
@@ -371,7 +361,7 @@ a {
     background: #222;
 }
 
-/* ---- Confirm dialog ---- */
+
 .confirm-dialog {
     position: fixed;
     top: 50%;

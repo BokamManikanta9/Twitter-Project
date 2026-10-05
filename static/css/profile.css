@@ -52,10 +52,6 @@ body {
     padding: 0 16px;
 }
 
-/* was align-items:flex-start — that put the Follow/Edit button level
-   with the TOP of the oversized avatar, leaving an odd gap underneath
-   it before the display name. flex-end anchors the button to the
-   avatar's bottom edge, matching the real X layout. */
 .profile-header {
     display: flex;
     justify-content: space-between;
@@ -183,8 +179,7 @@ body {
     color: #71767b;
 }
 
-/* Matched to homepage.css's post-actions (align-items: center) so the
-   action row looks identical whether it's rendered on the feed or here. */
+
 .post-actions {
     margin-left: 52px;
     margin-top: 10px;
@@ -193,9 +188,6 @@ body {
     align-items: center;
 }
 
-/* Same fix as homepage.css — .like-btn is a <span>❤️</span>, and
-   common.css's color:#f91880 does nothing on an emoji glyph. Filter
-   is the only way to recolor it. */
 .like-btn {
     display: inline-flex;
     align-items: center;

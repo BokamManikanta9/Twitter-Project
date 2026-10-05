@@ -5,10 +5,6 @@ body {
     padding: 0;
 }
 
-/* was: display:flex + justify-content:center + text-align:center — that
-   forced every post's text to center-align, fighting .post-card's
-   text-align:left in common.css. This is the main reason the feed
-   looked "off". Just a plain centered column, left-aligned content. */
 .content {
     max-width: 600px;
     margin: 0 auto;
@@ -26,12 +22,6 @@ body {
     align-items: center;
 }
 
-/* .like-btn is a <span>❤️</span>, not an <img> — height/width don't
-   apply to inline emoji text, and color: #f91880 (in common.css)
-   silently does nothing on emoji glyphs. inline-flex + font-size lets
-   us actually control its rendered size, and a filter (same trick
-   common.css already uses for repost/bookmark) is the only way to
-   recolor it when active. */
 .like-btn {
     display: inline-flex;
     align-items: center;
@@ -111,8 +101,6 @@ body {
     background: rgba(231, 233, 234, 0.06);
 }
 
-/* Aligned to the same 600px column as .content, so the tab bar's edges
-   line up with the feed below it instead of stretching full width. */
 .feed-tabs {
     display: flex;
     max-width: 600px;

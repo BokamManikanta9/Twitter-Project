@@ -30,7 +30,6 @@
     cursor: pointer;
 }
 
-/* section wrapper - separates People vs Posts blocks */
 .search-section {
     border: 1px solid #2f3336;
     border-radius: 16px;
@@ -106,8 +105,6 @@
     opacity: 0.6;
 }
 
-/* posts inside the Posts section shouldn't double up on rounded corners/border,
-   since post-card already has its own border-bottom from homepage.css */
 .search-section .post-card {
     border-radius: 0;
     border-left: none;

@@ -27,7 +27,6 @@
     border-right: 1px solid var(--border);
   }
 
-  /* Header */
   .chat-header {
     position: sticky;
     top: 0;

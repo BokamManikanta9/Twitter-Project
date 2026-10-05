@@ -27,8 +27,6 @@ cloudinary.config(
     api_secret=os.getenv("CLOUDINARY_API_SECRET"),
 )
 
-# Get SECRET_KEY from environment variable.
-# The fallback value is only for local development.
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 

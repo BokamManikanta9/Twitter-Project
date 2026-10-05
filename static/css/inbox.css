@@ -63,7 +63,6 @@
   .icon-btn:hover { background: var(--hover); }
   .icon-btn svg { width: 20px; height: 20px; fill: var(--text); }
 
-  /* Search */
   .search-wrap { padding: 10px 16px; border-bottom: 1px solid var(--border); }
 
   .search-box {
@@ -172,7 +171,7 @@
     flex-shrink: 0;
   }
 
-  /* Section title */
+
   .section-title {
     padding: 14px 16px 8px;
     color: var(--text);
@@ -180,7 +179,6 @@
     font-weight: 800;
   }
 
-  /* Empty state */
   .empty-state {
     padding: 60px 32px;
     text-align: center;
@@ -198,7 +196,6 @@
     margin: 0;
   }
 
-  /* Floating compose button (mobile-style) */
   .compose-fab {
     position: fixed;
     bottom: 24px;
