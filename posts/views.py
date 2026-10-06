@@ -160,10 +160,6 @@ def comment_post(request, post_id):
 
             comment.reply_to = parent
             is_reply = parent is not None
-            if parent:
-                parent_top_id = parent.parent_id or parent.id
-            else:
-                parent_top_id = None
 
             if request.headers.get("X-Requested-With") == "XMLHttpRequest":
                 html = render_to_string(
@@ -179,10 +175,12 @@ def comment_post(request, post_id):
                     "success": True,
                     "html": html,
                     "is_reply": is_reply,
-                    "parent_id": parent_top_id,
+                    "parent_id": parent.id if parent else None,
                 })
 
-    return redirect(request.META.get("HTTP_REFERER", "home:homepage"))
+    return redirect(
+        request.META.get("HTTP_REFERER", "home:homepage")
+    )
 
 @login_required
 def delete_post(request, post_id):

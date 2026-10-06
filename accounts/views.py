@@ -132,10 +132,8 @@ def profile_view(request, username):
 
     profile_feed.sort(key=lambda x: x["created_at"], reverse=True)
 
-    # pagination (same idea as homepage)
     page_obj = profile_feed
 
-    # engagement state
     if request.user.is_authenticated:
         liked_ids = set(Like.objects.filter(user=request.user).values_list('post_id', flat=True))
         reposted_ids = set(Repost.objects.filter(user=request.user).values_list('post_id', flat=True))
@@ -149,7 +147,6 @@ def profile_view(request, username):
         post.user_has_reposted = post.id in reposted_ids
         post.user_has_bookmarked = post.id in bookmarked_ids
 
-        # comments
         all_comments = list(post.comments.select_related('user').all())
         comment_map = {comment.id: comment for comment in all_comments}
 
