@@ -14,26 +14,60 @@
 <div class="search-page">
 
     <form method="GET" action="{% url 'accounts:search_page' %}" class="search-bar">
-        <input
-            type="text"
-            name="q"
-            placeholder="Search..."
-            value="{{ query }}"
-        >
-
+        <input type="text" name="q" placeholder="Search users..." value="{{ query }}">
         <button type="submit">Search</button>
     </form>
 
     <div class="results">
 
-        {% if query %}
-            <p class="no-results">
-                Search is currently unavailable.
-            </p>
+        {% if not query %}
+        <p class="hint">Search users by name or username or post or #hastag</p>
+
+        {% elif not users and not posts %}
+        <p class="no-results">No results for "{{ query }}"</p>
+
         {% else %}
-            <p class="hint">
-                Search users and posts here.
-            </p>
+
+            {% if users %}
+            <div class="search-section">
+                <h2 class="section-header">People</h2>
+                {% for user in users %}
+                <a href="{% url 'accounts:profile' user.username %}" class="user-card">
+                    {% if user.profile_pic %}
+                    <img src="{{ user.profile_pic.url }}" class="profile-pic">
+                    {% else %}
+                    <img src="{% static 'images/default-profile.jpeg' %}" class="profile-pic">
+                    {% endif %}
+                    <div class="user-info">
+                        <div class="name-row">
+                            <b>
+                                {{ user.first_name|default:user.username }}
+                                {% if user.verification_status == 'approved' %}
+                                <img src="{% static 'images/x-bluetickicon.png' %}" class="bluetick-icon">
+                                {% endif %}
+                            </b>
+                            <small>@{{ user.username }}</small>
+                        </div>
+                        {% if user.bio %}
+                        <p class="bio">{{ user.bio }}</p>
+                        {% else %}
+                        <p class="bio muted">No bio</p>
+                        {% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if posts %}
+            <div class="search-section">
+                <h2 class="section-header">Posts</h2>
+                {% for post in posts %}
+                {% include "post_card.html" with post=post item=None link_user=True show_edit_menu=True show_edit_delete=False extra_class="" comments_visible=False %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
         {% endif %}
 
     </div>

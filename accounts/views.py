@@ -9,6 +9,8 @@ from accounts.models import User
 from .models import VerificationRequest
 from posts.models import Post,Repost,Like,Bookmark,Comment
 from datetime import date
+from .documents import UserDocument
+from posts.documents import PostDocument
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, get_object_or_404
@@ -255,8 +257,61 @@ def request_verification(request):
 
 def search_page(request):
     query = request.GET.get("q", "")
-    return render(request, "search.html", {
-        "users": [],
-        "posts": [],
-        "query": query,
-    })
+    users = []
+    posts = []
+
+    if query:
+        user_search = UserDocument.search().query(
+            "multi_match",
+            query=query,
+            fields=[
+                "username",
+                "bio",
+                "first_name",
+                "last_name",
+                "verification_status",
+            ],
+            fuzziness="AUTO"
+        )[:50]
+        user_search_results = user_search.execute()
+        user_ids = []
+        for user_result in user_search_results:
+            user_id = int(user_result.meta.id)
+            user_ids.append(user_id)
+        users = User.objects.filter(id__in=user_ids)
+
+        post_search = PostDocument.search().query(
+            "multi_match",
+            query=query,
+            fields=["content", "hashtags"],
+            fuzziness="AUTO"
+        )[:50]
+        post_search_results = post_search.execute()
+        post_ids = []
+
+        for post_result in post_search_results:
+            post_id = int(post_result.meta.id)
+            post_ids.append(post_id)
+        posts = list(
+            Post.objects
+            .filter(id__in=post_ids)
+            .select_related("user")
+        )
+        post_order = {
+            post_id: position
+            for position, post_id in enumerate(post_ids)
+        }
+
+        posts.sort(
+            key=lambda post: post_order.get(post.id, 10**9)
+        )
+
+    return render(
+        request,
+        "search.html",
+        {
+            "users": users,
+            "posts": posts,
+            "query": query,
+        }
+    )

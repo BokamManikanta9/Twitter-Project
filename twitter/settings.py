@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_elasticsearch_dsl",
     "cloudinary",
     "cloudinary_storage",
     "django_celery_beat",
@@ -89,6 +90,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "notifications.context_processors.unread_notification_count",
             ],
         },
     },
@@ -132,6 +134,24 @@ AUTH_PASSWORD_VALIDATORS = [
         ),
     },
 ]
+
+ELASTICSEARCH_URL = os.getenv("ELASTICSEARCH_URL")
+ELASTICSEARCH_USERNAME = os.getenv("ELASTICSEARCH_USERNAME")
+ELASTICSEARCH_PASSWORD = os.getenv("ELASTICSEARCH_PASSWORD")
+
+ELASTICSEARCH_DSL = {
+    "default": {
+        "hosts": ELASTICSEARCH_URL,
+        "basic_auth": (
+            ELASTICSEARCH_USERNAME,
+            ELASTICSEARCH_PASSWORD,
+        ),
+    }
+}
+
+ELASTICSEARCH_DSL_SIGNAL_PROCESSOR = (
+    "django_elasticsearch_dsl.signals.RealTimeSignalProcessor"
+)
 
 
 LANGUAGE_CODE = "en-us"
