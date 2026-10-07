@@ -1,11 +1,112 @@
-{% extends "base.html" %}
-
-{% block title %}Messages{% endblock %}
-
+{% extends 'base.html' %}
+{% load static %}
 {% block content %}
-
-<div class="messages-empty">
-    <h2>Messages</h2>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/inbox.css' %}">
+{% endblock %}
+<div class="inbox-shell">
+    <div class="inbox-header">
+        <h2>Messages</h2>
+        <button class="icon-btn" type="button" aria-label="New message" onclick="document.getElementById('new-chat-section').scrollIntoView({behavior:'smooth'})">
+            <svg viewBox="0 0 24 24">
+                <path d="M20.036 4.211a2.5 2.5 0 0 0-3.535 0l-9.9 9.9a1 1 0 0 0-.263.465l-1 4a1 1 0 0 0 1.213 1.213l4-1a1 1 0 0 0 .465-.263l9.9-9.9a2.5 2.5 0 0 0 0-3.535l-.88-.88zM11.5 17.086 9.914 15.5l8.192-8.192 1.586 1.586L11.5 17.086z"/>
+            </svg>
+        </button>
+    </div>
+    <div class="search-wrap">
+        <div class="search-box">
+            <svg viewBox="0 0 24 24">
+                <path d="M10.25 3.75a6.5 6.5 0 1 0 4.05 11.6l4.68 4.67 1.06-1.06-4.67-4.68a6.5 6.5 0 0 0-5.12-10.53zm-5 6.5a5 5 0 1 1 10 0 5 5 0 0 1-10 0z"/>
+            </svg>
+            <input type="text" id="dm-search" placeholder="Search Direct Messages" oninput="filterInboxRows(this.value)" autocomplete="off">
+        </div>
+    </div>
+    {% if conversations %}
+        {% for c in conversations %}
+            {% if c.user1 == request.user %}
+                {% with other=c.user2 %}
+                    <a class="chat-row-link" href="{% url 'chat' c.id %}">
+                        <div class="chat-row">
+                            {% if other.profile_pic %}
+                                <img src="{{ other.profile_pic.url }}" class="avatar-img" alt="{{ other.username }}">
+                            {% else %}
+                                <img src="{% static 'images/default-profile.jpeg' %}" class="avatar-img" alt="{{ other.username }}">
+                            {% endif %}
+                            <div class="row-body">
+                                <div class="row-top">
+                                    <span class="username">{{ other.first_name|default:other.username }}</span>
+                                    <span class="timestamp">{{ c.last_message_time|default:"" }}</span>
+                                </div>
+                                <div class="subtext">{{ c.last_message|default:"Tap to open conversation" }}</div>
+                            </div>
+                            {% if c.unread %}
+                                <div class="unread-dot"></div>
+                            {% endif %}
+                        </div>
+                    </a>
+                {% endwith %}
+            {% else %}
+                {% with other=c.user1 %}
+                    <a class="chat-row-link" href="{% url 'chat' c.id %}">
+                        <div class="chat-row">
+                            {% if other.profile_pic %}
+                                <img src="{{ other.profile_pic.url }}" class="avatar-img" alt="{{ other.username }}">
+                            {% else %}
+                                <img src="{% static 'images/default-profile.jpeg' %}" class="avatar-img" alt="{{ other.username }}">
+                            {% endif %}
+                            <div class="row-body">
+                                <div class="row-top">
+                                    <span class="username">{{ other.first_name|default:other.username }}</span>
+                                    <span class="timestamp">{{ c.last_message_time|default:"" }}</span>
+                                </div>
+                                <div class="subtext">{{ c.last_message|default:"Tap to open conversation" }}</div>
+                            </div>
+                            {% if c.unread %}
+                                <div class="unread-dot"></div>
+                            {% endif %}
+                        </div>
+                    </a>
+                {% endwith %}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <h3>Nothing here yet</h3>
+            <p>Start a conversation with someone below to see it appear here.</p>
+        </div>
+    {% endif %}
+    <div id="new-chat-section" class="section-title">Start chat</div>
+    {% for u in users %}
+        <a class="chat-row-link" href="{% url 'start_conversation' u.id %}">
+            <div class="chat-row">
+                {% if u.profile_pic %}
+                    <img src="{{ u.profile_pic.url }}" class="avatar-img" alt="{{ u.username }}">
+                {% else %}
+                    <img src="{% static 'images/default-profile.jpeg' %}" class="avatar-img" alt="{{ u.username }}">
+                {% endif %}
+                <div class="row-body">
+                    <div class="row-top">
+                        <span class="username">{{ u.first_name|default:u.username }}</span>
+                    </div>
+                    <div class="subtext">Start conversation</div>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
 </div>
-
+<button class="compose-fab" type="button" aria-label="New message" onclick="document.getElementById('new-chat-section').scrollIntoView({behavior:'smooth'})">
+    <svg viewBox="0 0 24 24">
+        <path d="M20.036 4.211a2.5 2.5 0 0 0-3.535 0l-9.9 9.9a1 1 0 0 0-.263.465l-1 4a1 1 0 0 0 1.213 1.213l4-1a1 1 0 0 0 .465-.263l9.9-9.9a2.5 2.5 0 0 0 0-3.535l-.88-.88zM11.5 17.086 9.914 15.5l8.192-8.192 1.586 1.586L11.5 17.086z"/>
+    </svg>
+</button>
+<script>
+function filterInboxRows(query) {
+    const q = query.trim().toLowerCase();
+    document.querySelectorAll('.chat-row-link').forEach(function(row) {
+        const nameEl = row.querySelector('.username');
+        const name = nameEl ? nameEl.textContent.trim().toLowerCase() : '';
+        row.style.display = name.includes(q) ? '' : 'none';
+    });
+}
+</script>
 {% endblock %}

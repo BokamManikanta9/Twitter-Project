@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block content %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/chat.css' %}">
+{% endblock %}
+
+<div class="chat-container">
+  <div class="chat-header">
+    <a class="back-btn" href="{% url 'inbox' %}" aria-label="Back to messages">
+      <svg viewBox="0 0 24 24"><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"/></svg>
+    </a>
+    {% if other_user.profile_pic %}
+      <img src="{{ other_user.profile_pic.url }}" class="avatar-img" alt="{{ other_user.username }}">
+    {% else %}
+      <img src="{% static 'images/default-profile.jpeg' %}" class="avatar-img" alt="{{ other_user.username }}">
+    {% endif %}
+    <div class="header-info">
+      <div class="header-name">{{ other_user.username }}</div>
+      <div class="header-status">@{{ other_user.username }}</div>
+    </div>
+  </div>
+
+  <div class="messages">
+    {% if messages %}
+      {% for msg in messages %}
+        <div class="msg-row {% if msg.sender == request.user %}me{% else %}them{% endif %}">
+          <div class="msg">{{ msg.text }}</div>
+          <div class="msg-time">{{ msg.created_at|date:"g:i A" }}</div>        </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty-thread">
+        <h3>Say hello</h3>
+        <p>This is the start of your conversation with {{ other_user.username }}.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <form method="POST">
+    {% csrf_token %}
+    <input type="text" name="text" placeholder="Start a new message" required autocomplete="off">
+    <button type="submit">Send</button>
+  </form>
+</div>
+{% endblock %}
