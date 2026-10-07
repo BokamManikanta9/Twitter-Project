@@ -186,7 +186,18 @@ MAILERS = {
     },
 }
 
+CELERY_BROKER_URL = os.getenv(
+    "CELERY_BROKER_URL",
+    "redis://localhost:6379/0",
+)
 
+CELERY_TIMEZONE = TIME_ZONE
+
+CELERY_BEAT_SCHEDULER = (
+    "django_celery_beat.schedulers:DatabaseScheduler"
+)
+
+CELERY_TASK_TRACK_STARTED = True
 
 RENDER_EXTERNAL_URL = os.environ.get("RENDER_EXTERNAL_URL")
 

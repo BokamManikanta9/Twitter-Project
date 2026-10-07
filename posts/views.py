@@ -283,7 +283,6 @@ def bookmarks(request):
     attach_comment_threads(posts) 
     return render(request, "bookmarks.html", {"posts": posts})
 
-
 @login_required
 def trending_view(request):
     now = timezone.now()
